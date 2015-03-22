@@ -2,6 +2,7 @@
 import os
 import argparse
 import re
+import sys
 import yaml
 from jinja2 import Environment, PackageLoader
 env = Environment(loader=PackageLoader('simple_site_manager', "templates"))
@@ -107,18 +108,19 @@ class Site(object):
 def main_func():
     parser = argparse.ArgumentParser(description='Create lighttpd configuration files and fcgi.py files.')
 
-    parser.add_argument('--config', "-c", type=argparse.FileType('r'), nargs=1,
-                        required=True,
-                        help='site list file')
     parser.add_argument('--print', "-p", action='store_true',
                         required=False,
                         help='print all file data to console')
     parser.add_argument('--dry_run', action='store_true',
                         required=False,
                         help='just print file actions')
+    parser.add_argument('config_file', type=argparse.FileType('r'), nargs=1,
+                        default=sys.stdin,
+                        #required=True,
+                        help='site list file')
 
     args = vars(parser.parse_args())
-    config_file = args['config'][0]
+    config_file = args['config_file'][0]
     dry_run = args.get('dry_run', False)
     server = Server(config_file, dry_run=dry_run)
     if not args['print']:
