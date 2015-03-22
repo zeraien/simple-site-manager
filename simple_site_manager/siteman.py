@@ -16,7 +16,8 @@ DEFAULTS = {
     "www_static_path": "/m/",
     "max_procs": "3",
     "virtual_env_dir": "%(project_root_dir)senv-%(project_name)s/",
-    "settings_module": "settings"
+    "settings_module": "settings",
+    'redirect_from_domains': []
 }
 
 class Server(object):
@@ -92,6 +93,8 @@ class Site(object):
         self.virtual_env_dir = self._or_default(kwargs, 'virtual_env_dir')
         self.settings_module = self._or_default(kwargs, 'settings_module')
         self.settings_module = u"%s.%s" % (self.project_name, self.settings_module)
+
+        self.redirect_from_domains = self._or_default(kwargs, 'redirect_from_domains')
 
     def generate_fcgi_file(self):
         template = env.get_template('fcgi.py.jinja2')
