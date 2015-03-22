@@ -2,8 +2,8 @@
 import os
 import re
 import yaml
-from jinja2 import Environment, FileSystemLoader
-env = Environment(loader=FileSystemLoader("templates"))
+from jinja2 import Environment, PackageLoader
+env = Environment(loader=PackageLoader('simple_site_manager', "templates"))
 
 DEFAULTS = {
     "project_root_dir": "/opt/django/%(project_name)s/",
