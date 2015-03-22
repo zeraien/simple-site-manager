@@ -15,7 +15,7 @@ site1:
   static_dir: /opt/static/site1/,
   www_uploaded_path: /uploaded/,
   www_static_path: /m/,
-  virtual_env_dir: /opt/virtualenvs/senv-%(project_name)s/,
+  virtual_env_dir: /opt/virtualenvs/env-site1/,
   settings_module: settings
   max_procs: 3
 ```
