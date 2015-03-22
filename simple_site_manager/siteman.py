@@ -1,11 +1,22 @@
 #!/usr/bin/env python
 import os
-import argparse
 import re
 import yaml
 from jinja2 import Environment, FileSystemLoader
 env = Environment(loader=FileSystemLoader("templates"))
 
+DEFAULTS = {
+    "project_root_dir": "/opt/django/%(project_name)s/",
+    "django_root_dir": "%(project_root_dir)s%(project_name)s/",
+    "fcgi_path": "%(django_root_dir)sfcgi.py",
+    "uploaded_dir": "/opt/static/uploaded_%(project_name)s/",
+    "static_dir": "/opt/static/%(project_name)s/",
+    "www_uploaded_path": "/uploaded/",
+    "www_static_path": "/m/",
+    "max_procs": "3",
+    "virtual_env_dir": "%(project_root_dir)senv-%(project_name)s/",
+    "settings_module": "settings"
+}
 
 class Server(object):
     def __init__(self, config_file, dry_run=False):
@@ -47,19 +58,6 @@ def sites_for_settings(config_file):
     for site_name, site_data in config_data.items():
         yield Site(site_name, **site_data)
 
-DEFAULTS = {
-    "project_root_dir": "/opt/django/%(project_name)s/",
-    "django_root_dir": "%(project_root_dir)s%(project_name)s/",
-    "fcgi_path": "%(django_root_dir)sfcgi.py",
-    "uploaded_dir": "/opt/static/uploaded_%(project_name)s/",
-    "static_dir": "/opt/static/%(project_name)s/",
-    "www_uploaded_path": "/uploaded/",
-    "www_static_path": "/m/",
-    "max_procs": "3",
-    "virtual_env_dir": "%(project_root_dir)senv-%(project_name)s/",
-    "settings_module": "settings"
-}
-
 class Site(object):
     def _path_fix(self, path):
         matches = re.match(r"^/?(.*)/?$", path)
@@ -100,33 +98,3 @@ class Site(object):
     def generate_lighttpd_config(self):
         template = env.get_template('lighttpd.conf.jinja2')
         return template.render(**vars(self))
-
-if __name__ == "__main__":
-
-
-    parser = argparse.ArgumentParser(description='Create lighttpd configuration files and fcgi.py files.')
-
-    parser.add_argument('--config', "-c", type=argparse.FileType('r'), nargs=1,
-                       help='project list file')
-    parser.add_argument('--print', "-p", action='store_true', required=False,
-                       help='to print to console')
-    parser.add_argument('--dry_run', action='store_true', required=False,
-                       help='just print file actions')
-
-    args = vars(parser.parse_args())
-    config_file = args['config'][0]
-    dry_run = args.get('dry_run', False)
-    server = Server(config_file, dry_run=dry_run)
-    if not args['print']:
-        server.write()
-    else:
-        for site in server.sites:
-            print "------------------------------------------------"
-            print "fcgi.py"
-            print "------------------------------------------------"
-            print site.generate_fcgi_file()
-            print "------------------------------------------------"
-            print "lighttpd.conf"
-            print "------------------------------------------------"
-            print site.generate_lighttpd_config()
-
