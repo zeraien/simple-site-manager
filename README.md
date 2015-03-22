@@ -7,7 +7,16 @@ Templates are used for the output files so they can easily be modified and custo
 ```yaml
 site1:
   domain_name: example.com
-  django_root_path: /opt/django/site1/
+  # optional arguments
+  project_root_dir: /opt/django/site1/,
+  django_root_dir: /opt/django/site1/site1/,
+  fcgi_path: /opt/django/site1/site1/fcgi.py,
+  uploaded_dir: /opt/static/uploaded_site1/,
+  static_dir: /opt/static/site1/,
+  www_uploaded_path: /uploaded/,
+  www_static_path: /m/,
+  virtual_env_dir: /opt/virtualenvs/senv-%(project_name)s/,
+  settings_module: settings
   max_procs: 3
 ```
 
