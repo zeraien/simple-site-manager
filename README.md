@@ -8,6 +8,7 @@ Templates are used for the output files so they can easily be modified and custo
 site1:
   domain_name: example.com
   # optional arguments
+  redirect_from_domains: ['www.example.com']
   project_root_dir: /opt/django/site1/,
   django_root_dir: /opt/django/site1/site1/,
   fcgi_path: /opt/django/site1/site1/fcgi.py,

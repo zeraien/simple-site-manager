@@ -7,13 +7,13 @@ from os import path
 here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the relevant file
-with open(path.join(here, 'README.md'), encoding='utf-8') as f:
+with open(path.join(here, 'README'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
     name='simple-site-manager',
 
-    version='0.1.0',
+    version='0.1.3',
 
     description='Manage multiple lighttpd and Django or Flask websites on a single machine. ',
     long_description=long_description,
