@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import os.path
+import os
 import argparse
 import re
 import yaml
@@ -8,22 +8,44 @@ env = Environment(loader=FileSystemLoader("templates"))
 
 
 class Server(object):
-    def __init__(self, config_file):
-
-        config_data = yaml.load(config_file)
+    def __init__(self, config_file, dry_run=False):
+        self.dry_run = dry_run
         self.sites = []
-        for site_name, site_data in config_data.items():
-            site = Site(site_name, **site_data)
-            print site.generate_lighttpd_config()
-            print "-------------------------------------"
-            print site.generate_fcgi_file()
+        for site in sites_for_settings(config_file):
+            self.sites.append(site)
 
-    def write_fcgi_files(self):
-        pass
-    def write_lighttpd_config(self):
-        config_path = "/etc/lighttpd/conf-available/"
-        config_enabled_path = "/etc/lighttpd/conf-enabled/"
+    def write_fcgi_file(self, site):
+        conf = site.generate_fcgi_file()
+        if not self.dry_run:
+            with open(site.fcgi_path, 'w') as f:
+                f.write(conf)
+        return site.fcgi_path
 
+    def write_ligttpd_config(self, site):
+        config_path = "/etc/lighttpd/"
+        file_path = os.path.join(config_path, u"conf-available/%s-siteman.conf" % site.project_name)
+        symlink_path = os.path.join(config_path, u"conf-enabled/%s-siteman.conf" % site.project_name)
+
+        conf = site.generate_lighttpd_config()
+        if not self.dry_run:
+            with open(file_path, 'w') as f:
+                f.write(conf)
+            os.symlink(file_path, symlink_path)
+        return file_path
+
+
+    def write(self):
+        for site in self.sites:
+            print "Writing files for %s" % site
+            if self.dry_run:
+                print "DRY_RUN"
+            print "Wrote", self.write_ligttpd_config(site)
+            print "Wrote", self.write_fcgi_file(site)
+
+def sites_for_settings(config_file):
+    config_data = yaml.load(config_file)
+    for site_name, site_data in config_data.items():
+        yield Site(site_name, **site_data)
 
 DEFAULTS = {
     "project_root_dir": "/opt/django/%(project_name)s/",
@@ -45,6 +67,9 @@ class Site(object):
 
     def _or_default(self, kwargs, key):
         return kwargs.get(key, unicode(DEFAULTS[key]) % vars(self))
+
+    def __repr__(self):
+        return self.project_name
 
     def __init__(self, name, **kwargs):
 
@@ -83,9 +108,25 @@ if __name__ == "__main__":
 
     parser.add_argument('--config', "-c", type=argparse.FileType('r'), nargs=1,
                        help='project list file')
+    parser.add_argument('--print', "-p", action='store_true', required=False,
+                       help='to print to console')
+    parser.add_argument('--dry_run', action='store_true', required=False,
+                       help='just print file actions')
 
-    args = parser.parse_args()
-    config_file = vars(args)['config'][0]
-    Server(config_file)
+    args = vars(parser.parse_args())
+    config_file = args['config'][0]
+    dry_run = args.get('dry_run', False)
+    server = Server(config_file, dry_run=dry_run)
+    if not args['print']:
+        server.write()
+    else:
+        for site in server.sites:
+            print "------------------------------------------------"
+            print "fcgi.py"
+            print "------------------------------------------------"
+            print site.generate_fcgi_file()
+            print "------------------------------------------------"
+            print "lighttpd.conf"
+            print "------------------------------------------------"
+            print site.generate_lighttpd_config()
 
-    pass
