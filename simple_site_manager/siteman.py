@@ -114,7 +114,9 @@ def main_func():
     parser.add_argument('--dry_run', action='store_true',
                         required=False,
                         help='just print file actions')
-    parser.add_argument('config_file', type=argparse.FileType('r'), nargs=1,
+    parser.add_argument('config_file',
+                        type=argparse.FileType('r'),
+                        nargs=1,
                         default=sys.stdin,
                         #required=True,
                         help='site list file')
