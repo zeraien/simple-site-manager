@@ -3,6 +3,8 @@
 This creates configuration files for lighttpd and django fcgi, based on a simple list of sites. 
 Templates are used for the output files so they can easily be modified and customised for your own sites.
 
+The project is in the early stages, barely tested. More to come. Born from the frustration I felt every time I wanted to delpoy a new python driven site...
+
 ## Example site list
 ```yaml
 site1:
