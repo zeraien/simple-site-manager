@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# The MIT License (MIT)
+# Copyright (c) 2015 Dmitri Fedortchenko
+
 import os
 import argparse
 import re
