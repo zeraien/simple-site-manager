@@ -58,7 +58,8 @@ class Server(object):
         if not self.dry_run:
             with open(file_path, 'w') as f:
                 f.write(conf)
-            os.unlink(symlink_path)
+            if os.path.exists(symlink_path):
+                os.unlink(symlink_path)
             os.symlink(file_path, symlink_path)
         return ', '.join((file_path, symlink_path))
 
