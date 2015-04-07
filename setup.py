@@ -13,7 +13,7 @@ with open(path.join(here, 'README'), encoding='utf-8') as f:
 setup(
     name='simple-site-manager',
 
-    version='0.1.5',
+    version='0.1.6',
 
     description='Manage multiple lighttpd and Django or Flask websites on a single machine. ',
     long_description=long_description,
