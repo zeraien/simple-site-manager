@@ -15,7 +15,7 @@ site1:
   redirect_from_domains: ['www.example.com']
   project_root_dir: /opt/django/site1/,
   django_root_dir: /opt/django/site1/site1/,
-  fcgi_path: /opt/django/site1/site1/fcgi.py,
+  fcgi_path: /opt/django/site1/site1/siteman-fcgi.py,
   uploaded_dir: /opt/static/uploaded_site1/,
   static_dir: /opt/static/site1/,
   www_uploaded_path: /uploaded/,
