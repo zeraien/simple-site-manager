@@ -51,8 +51,8 @@ class Server(object):
 
     def write_ligttpd_config(self, site):
         config_path = "/etc/lighttpd/"
-        file_path = os.path.join(config_path, u"conf-available/%s-siteman.conf" % site.project_name)
-        symlink_path = os.path.join(config_path, u"conf-enabled/%s-siteman.conf" % site.project_name)
+        file_path = os.path.join(config_path, u"conf-available/siteman-%s.conf" % site.project_name)
+        symlink_path = os.path.join(config_path, u"conf-enabled/siteman-%s.conf" % site.project_name)
 
         conf = site.generate_lighttpd_config()
         if not self.dry_run:
