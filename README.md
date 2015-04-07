@@ -7,6 +7,15 @@ You can either use a global config file or individual files for each project.
 
 The project is in the early stages, barely tested. More to come. Born from the frustration I felt every time I wanted to delpoy a new python driven site...
 
+# Install
+
+Install from pypi:
+```sh
+pip install simple-site-manager
+```
+
+# Configure
+
 ## Example site list
 ```yaml
 site1:
@@ -39,6 +48,14 @@ Here are some defaults:
     settings module:                             sitename.settings
     virtualenv path:                             /opt/django/sitename/env-sitename/
 ```
+
+# Usage
+```sh
+siteman config_file.yaml
+```
+You will need to run it as root to write lighttpd configuration, feel free to use `--print` to preview the output files.
+
+For additional usage options, just run `siteman -h`
 
 # TODO
 
