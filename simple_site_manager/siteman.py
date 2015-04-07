@@ -24,7 +24,7 @@ env = Environment(loader=PackageLoader('simple_site_manager', "templates"))
 DEFAULTS = {
     "project_root_dir": "/opt/django/%(project_name)s/",
     "django_root_dir": "%(project_root_dir)s%(project_name)s/",
-    "fcgi_path": "%(django_root_dir)sfcgi.py",
+    "fcgi_path": "%(django_root_dir)ssiteman-fcgi.py",
     "uploaded_dir": "/opt/static/uploaded_%(project_name)s/",
     "static_dir": "/opt/static/%(project_name)s/",
     "www_uploaded_path": "/uploaded/",
