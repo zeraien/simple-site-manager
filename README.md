@@ -16,18 +16,29 @@ site1:
   project_root_dir: /opt/django/site1/,
   django_root_dir: /opt/django/site1/site1/,
   fcgi_path: /opt/django/site1/site1/siteman-fcgi.py,
-  uploaded_dir: /opt/static/uploaded_site1/,
+  uploaded_dir: /opt/static/site1_uploaded/,
   static_dir: /opt/static/site1/,
   www_uploaded_path: /uploaded/,
   www_static_path: /m/,
-  virtual_env_dir: /opt/virtualenvs/env-site1/,
-  settings_module: settings
+  virtual_env_dir: /opt/django/site1/env-site1/,
+  settings_module: site1.settings
   max_procs: 3
 ```
 
 ### Defaults
 The paths in the example above are the defaults if nothing is specified in the config file.
 In a future versions you will be able to set your defaults yourself.
+
+Here are some defaults:
+```
+    root of your project:                        /opt/django/sitename/
+    fcgi file path (where manage.py is located): /opt/django/sitename/sitename/
+    static files:                                /opt/static/sitename/
+    static uploaded files:                       /opt/static/sitename_uploaded/
+    settings file:                               /opt/django/sitename/sitename/sitename/settings.py
+    settings module:                             sitename.settings
+    virtualenv path:                             /opt/django/sitename/env-sitename/
+```
 
 # TODO
 
