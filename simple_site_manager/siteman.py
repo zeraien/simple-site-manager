@@ -25,7 +25,7 @@ DEFAULTS = {
     "project_root_dir": "/opt/django/%(project_name)s/",
     "django_root_dir": "%(project_root_dir)s%(project_name)s/",
     "fcgi_path": "%(django_root_dir)ssiteman-fcgi.py",
-    "uploaded_dir": "/opt/static/uploaded_%(project_name)s/",
+    "uploaded_dir": "/opt/static/%(project_name)s_uploaded/",
     "static_dir": "/opt/static/%(project_name)s/",
     "www_uploaded_path": "/uploaded/",
     "www_static_path": "/m/",
@@ -47,6 +47,7 @@ class Server(object):
         if not self.dry_run:
             with open(site.fcgi_path, 'w') as f:
                 f.write(conf)
+            os.chmod(site.fcgi_path, 0755)
         return site.fcgi_path
 
     def write_ligttpd_config(self, site):
@@ -108,7 +109,8 @@ class Site(object):
 
         self.virtual_env_dir = self._or_default(kwargs, 'virtual_env_dir')
         self.settings_module = self._or_default(kwargs, 'settings_module')
-        self.settings_module = u"%s.%s" % (self.project_name, self.settings_module)
+        if 'settings_module' not in kwargs:
+            self.settings_module = u"%s.%s" % (self.project_name, self.settings_module)
 
         self.redirect_from_domains = kwargs.get('redirect_from_domains', [])
 
