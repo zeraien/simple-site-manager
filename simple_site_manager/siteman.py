@@ -30,6 +30,7 @@ DEFAULTS = {
     "www_uploaded_path": "/uploaded/",
     "www_static_path": "/m/",
     "max_procs": "3",
+    "redirect_to_https": False,
     "virtual_env_dir": "%(project_root_dir)senv-%(project_name)s/",
     "settings_module": "settings",
     'redirect_from_domains': []
@@ -113,6 +114,7 @@ class Site(object):
             self.settings_module = u"%s.%s" % (self.project_name, self.settings_module)
 
         self.redirect_from_domains = kwargs.get('redirect_from_domains', [])
+        self.redirect_to_https = kwargs.get('redirect_to_https', DEFAULTS['redirect_to_https'])
 
     def generate_fcgi_file(self):
         template = env.get_template('fcgi.py.jinja2')

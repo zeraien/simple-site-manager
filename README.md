@@ -29,6 +29,7 @@ site1:
   static_dir: /opt/static/site1/,
   www_uploaded_path: /uploaded/,
   www_static_path: /m/,
+  redirect_to_https: false,
   virtual_env_dir: /opt/django/site1/env-site1/,
   settings_module: site1.settings
   max_procs: 3
@@ -60,3 +61,5 @@ For additional usage options, just run `siteman -h`
 # TODO
 
 - More fine tuning of site performance settings.
+- Store site fcgi config in /etc/siteman instead of each project's directory
+- Store lighttpd conf files in /etc/siteman as well?

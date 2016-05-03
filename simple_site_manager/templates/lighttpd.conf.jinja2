@@ -1,6 +1,6 @@
 {% for redirect_from in redirect_from_domains %}
 $HTTP["host"] == "{{ redirect_from }}" {
-  url.redirect = ( "^/(.*)" => "http://{{ domain_name }}/$1" )
+  url.redirect = ( "^/(.*)" => "{{ "https://" if redirect_to_https else "//" }}{{ domain_name }}/$1" )
 }
 {% endfor %}
 
